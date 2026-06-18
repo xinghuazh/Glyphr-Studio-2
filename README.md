@@ -60,3 +60,8 @@ Copyright (C) 2010 - 2026 Matthew LaGrandeur, released under
 | ---------------------------------------------------------------------------------------------------- |
 | [Matthew LaGrandeur](http://mattlag.com/)                                                            |
 | matt[at]mattlag[dot]com                                                                              |
+
+# Debug
+- npm install
+- npm run dev
+- http://localhost:5173/

@@ -20,16 +20,16 @@ import { GlyphrStudioApp, showAppErrorPage } from './app.js';
  * First function to run when the browser starts
  */
 export function glyphrStudioOnLoad() {
-	console.info(`%c${asciiLogo}\n`, 'color: hsl(200, 100%, 41%);');
+	//console.info(`%c${asciiLogo}\n`, 'color: hsl(200, 100%, 41%);');
 	try {
 		const app = getGlyphrStudioApp();
-		if (app.version) {
-			console.info(
-				`%cApp Version ${app.version}%c\n`,
-				'color:hsl(200, 100%, 41%);; background-color:hsla(200, 100%, 49%, 10%); padding: 4px 8px; border-radius: 12px;',
-				'background-color: transparent;'
-			);
-		}
+		// if (app.version) {
+		// 	console.info(
+		// 		`%cApp Version ${app.version}%c\n`,
+		// 		'color:hsl(200, 100%, 41%);; background-color:hsla(200, 100%, 49%, 10%); padding: 4px 8px; border-radius: 12px;',
+		// 		'background-color: transparent;'
+		// 	);
+		// }
 		// log(`glyphrStudioOnLoad`, 'start');
 		// let favIcon = makeElement({
 		// 	tag: 'link',

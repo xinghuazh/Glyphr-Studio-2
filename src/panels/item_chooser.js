@@ -237,7 +237,7 @@ function makeCharacterChooserTileGrid(editor = getCurrentProjectEditor()) {
 	let rangeArray = editor.selectedCharacterRange.getMemberIDs();
 
 	if (rangeArray?.length) {
-		const pagedCharacters = getItemsFromPage(rangeArray, editor.chooserPage.characters, editor);
+		const pagedCharacters = rangeArray; // getItemsFromPage(rangeArray, editor.chooserPage.characters, editor);
 		if (rangeArray.length > pagedCharacters.length) {
 			tileGrid.appendChild(makePageControl('characters', rangeArray, editor));
 		}
@@ -247,6 +247,9 @@ function makeCharacterChooserTileGrid(editor = getCurrentProjectEditor()) {
 			let oneTile = new GlyphTile({ 'displayed-item-id': glyphID, project: editor.project });
 			if (isPrimaryProject && editor.selectedGlyphID === glyphID) {
 				oneTile.setAttribute('selected', '');
+			}
+			if (oneTile.glyph === false) {
+				return;
 			}
 
 			oneTile.addEventListener('click', () => savedClickHandler(glyphID));

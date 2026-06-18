@@ -1,6 +1,7 @@
 import { getCurrentProjectEditor } from '../app/main';
 import { addAsChildren, makeElement } from '../common/dom';
 import { redrawLivePreviewPageDisplayCanvas } from '../pages/live_preview';
+import { getLivePreviewCanvas } from '../pages/live_preview';
 import {
 	makeLivePreviewPopOutCard,
 	updatePopOutWindowContent,
@@ -66,9 +67,60 @@ export function makePanel_LivePreview(textBlockOptions, showPopOutCard = true) {
 		makeButton('All lower case letter permutations', makePermutations(false)),
 	]);
 
-	let result = [basicOptionsCard, pageOptionsCard, sampleTextHeader, pangramCard, glyphSetsCard];
+	// Background image
+	let backgroundImage = makeElement({
+		tag: 'div',
+		className: 'panel__card full-width',
+		innerHTML: '<h3>Background image</h3>',
+		id: 'backgroundImage',
+	});
+
+	addAsChildren(backgroundImage, [
+		makeFileInput('upload'),
+	]);
+
+	let result = [basicOptionsCard, pageOptionsCard, sampleTextHeader, pangramCard, glyphSetsCard, backgroundImage];
 	if (showPopOutCard) result.splice(2, 0, makeLivePreviewPopOutCard());
 	return result;
+}
+
+function makeFileInput(text, chars) {
+	chars = chars || text.replace('<br>', ' ');
+	let input = makeElement({
+		tag: 'input',
+		attributes: {
+			type: 'file',
+			accept: 'image/*',
+			id: 'fileInput0',
+		},
+	});
+
+	input.addEventListener('change', function(e) {
+		const file = e.target.files[0];
+		log(`file: ${file}`);
+		if (!file) return;
+
+		const displayCanvas = getLivePreviewCanvas();
+		log(`displayCanvas: ${displayCanvas}`);
+		console.log("displayCanvas: ", displayCanvas);
+
+		const reader = new FileReader();
+		reader.onload = function(event) {
+			const img = new Image();
+			img.onload = function() {
+				log(`img: ${img}`);
+				displayCanvas.setBackImg(img);
+				// 绘制图片到 canvas
+				//ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+				// 或者保持原始尺寸
+				// ctx.drawImage(img, 0, 0);
+			};
+			img.src = event.target.result;
+		};
+		reader.readAsDataURL(file);
+	});
+
+	return input;
 }
 
 function makeButton(text, chars) {

@@ -56,6 +56,19 @@ export function makePage_LivePreview() {
 /**
  * Event handler for when the page gets resized.
  */
+export function getLivePreviewCanvas() {
+	// log(`livePreviewPageWindowResize`, 'start');
+	const wrapper = document.querySelector('.live-preview-page__canvas-wrapper');
+	/** @type {DisplayCanvas} */
+	const displayCanvas = wrapper.querySelector('display-canvas');
+	//displayCanvas.resizeAndRedraw();
+	// log(`livePreviewPageWindowResize`, 'end');
+	return displayCanvas;
+}
+
+/**
+ * Event handler for when the page gets resized.
+ */
 export function livePreviewPageWindowResize() {
 	// log(`livePreviewPageWindowResize`, 'start');
 	const wrapper = document.querySelector('.live-preview-page__canvas-wrapper');
@@ -71,9 +84,19 @@ export function livePreviewPageWindowResize() {
 export function redrawLivePreviewPageDisplayCanvas() {
 	const editor = getCurrentProjectEditor();
 	if (editor.nav.page === 'Live preview') {
-		let canvasWrapper = document.querySelector('.live-preview-page__canvas-wrapper');
-		canvasWrapper.innerHTML = '';
+		let wrapper = document.querySelector('.live-preview-page__canvas-wrapper');
 		const livePreviewOptions = editor.livePreviewPageOptions;
-		canvasWrapper.appendChild(new DisplayCanvas(livePreviewOptions));
+
+		// save canvas
+		const lastCanvas = wrapper.querySelector('display-canvas');
+		const img = null;
+		if (lastCanvas === null) {
+			img = lastCanvas.getBackImg();
+		}
+
+		wrapper.innerHTML = '';
+		wrapper.appendChild(new DisplayCanvas(livePreviewOptions));
+		const displayCanvas = wrapper.querySelector('display-canvas');
+		displayCanvas.setBackImg(img);
 	}
 }
