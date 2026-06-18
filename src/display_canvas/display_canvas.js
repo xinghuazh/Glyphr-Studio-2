@@ -344,12 +344,6 @@ export class DisplayCanvas extends HTMLElement {
 		// @ts-expect-error 'property does exist'
 		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-		if (this.bkImg) {
-			this.ctx.globalAlpha = 0.5;
-			this.ctx.drawImage(this.bkImg, 0, 0, this.canvas.width, this.canvas.height);
-			this.ctx.globalAlpha = 1.0;
-		}
-
 		// log('this.textBlock');
 		// log(this.textBlock);
 		if (this.textBlock.hasDrawableCharacters) {
@@ -368,6 +362,12 @@ export class DisplayCanvas extends HTMLElement {
 				let y = this.height / 2;
 				this.ctx.fillText('Project preview text will be shown here.', x, y);
 			}
+		}
+
+		if (this.bkImg) {
+			this.ctx.globalAlpha = 0.5;
+			this.ctx.drawImage(this.bkImg, 0, 0, this.canvas.width, this.canvas.height);
+			this.ctx.globalAlpha = 1.0;
 		}
 
 		// log('DisplayCanvas.redraw', 'end');

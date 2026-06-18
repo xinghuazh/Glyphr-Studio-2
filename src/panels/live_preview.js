@@ -67,60 +67,9 @@ export function makePanel_LivePreview(textBlockOptions, showPopOutCard = true) {
 		makeButton('All lower case letter permutations', makePermutations(false)),
 	]);
 
-	// Background image
-	let backgroundImage = makeElement({
-		tag: 'div',
-		className: 'panel__card full-width',
-		innerHTML: '<h3>Background image</h3>',
-		id: 'backgroundImage',
-	});
-
-	addAsChildren(backgroundImage, [
-		makeFileInput('upload'),
-	]);
-
-	let result = [basicOptionsCard, pageOptionsCard, sampleTextHeader, pangramCard, glyphSetsCard, backgroundImage];
+	let result = [basicOptionsCard, pageOptionsCard, sampleTextHeader, pangramCard, glyphSetsCard];
 	if (showPopOutCard) result.splice(2, 0, makeLivePreviewPopOutCard());
 	return result;
-}
-
-function makeFileInput(text, chars) {
-	chars = chars || text.replace('<br>', ' ');
-	let input = makeElement({
-		tag: 'input',
-		attributes: {
-			type: 'file',
-			accept: 'image/*',
-			id: 'fileInput0',
-		},
-	});
-
-	input.addEventListener('change', function(e) {
-		const file = e.target.files[0];
-		log(`file: ${file}`);
-		if (!file) return;
-
-		const displayCanvas = getLivePreviewCanvas();
-		log(`displayCanvas: ${displayCanvas}`);
-		console.log("displayCanvas: ", displayCanvas);
-
-		const reader = new FileReader();
-		reader.onload = function(event) {
-			const img = new Image();
-			img.onload = function() {
-				log(`img: ${img}`);
-				displayCanvas.setBackImg(img);
-				// 绘制图片到 canvas
-				//ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-				// 或者保持原始尺寸
-				// ctx.drawImage(img, 0, 0);
-			};
-			img.src = event.target.result;
-		};
-		reader.readAsDataURL(file);
-	});
-
-	return input;
 }
 
 function makeButton(text, chars) {
@@ -274,7 +223,83 @@ function makeTextBlockOptions_basicOptions(textBlockOptions) {
 		redrawAllLivePreviews();
 	});
 
-	return [textLabel, textInput, fontSizeLabel, fontSizeInput, lineGapLabel, lineGapInput];
+	// back image
+	let bkImgLabel = makeSingleLabel('Background image:');
+	let bkImgInput = makeElement({
+		tag: 'input',
+		attributes: {
+			type: 'file',
+			accept: 'image/*',
+			id: 'fileInput0',
+		},
+	});
+	bkImgInput.addEventListener('change', function(e) {
+		const file = e.target.files[0];
+		log(`file: ${file}`);
+		if (!file) return;
+
+		const displayCanvas = getLivePreviewCanvas();
+		log(`displayCanvas: ${displayCanvas}`);
+		console.log("displayCanvas: ", displayCanvas);
+
+		const reader = new FileReader();
+		reader.onload = function(event) {
+			const img = new Image();
+			img.onload = function() {
+				log(`img: ${img}`);
+				displayCanvas.setBackImg(img);
+				// 绘制图片到 canvas
+				//ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+				// 或者保持原始尺寸
+				// ctx.drawImage(img, 0, 0);
+			};
+			img.src = event.target.result;
+		};
+		reader.readAsDataURL(file);
+	});
+
+	// back image offsetX
+	let bkImgOffLabelX = makeSingleLabel('Background image offX:');
+	let bkImgOffInputX = makeElement({
+		tag: 'input-number',
+		attributes: { value: textBlockOptions.bkOffsetX | 0 },
+	});
+	bkImgOffInputX.addEventListener('change', (event) => {
+		// @ts-expect-error 'property does exist'
+		textBlockOptions.bkOffsetX = event.target.value;
+		redrawAllLivePreviews();
+	});
+
+	// back image offsetY
+	let bkImgOffLabelY = makeSingleLabel('Background image offY:');
+	let bkImgOffInputY = makeElement({
+		tag: 'input-number',
+		attributes: { value: textBlockOptions.bkOffsetY | 0 },
+	});
+	bkImgOffInputX.addEventListener('change', (event) => {
+		// @ts-expect-error 'property does exist'
+		textBlockOptions.bkOffsetY = event.target.value;
+		redrawAllLivePreviews();
+	});
+
+	// back image scale
+	let bkImgScaleLabel = makeSingleLabel('Background image scale:');
+	let bkImgScaleInput = makeElement({
+		tag: 'input-number',
+		attributes: { value: textBlockOptions.bkScale | 0, step: 0.1 },
+	});
+	bkImgOffInputX.addEventListener('change', (event) => {
+		// @ts-expect-error 'property does exist'
+		textBlockOptions.bkScale = event.target.value;
+		redrawAllLivePreviews();
+	});
+
+	return [textLabel, textInput, fontSizeLabel, fontSizeInput, lineGapLabel, lineGapInput,
+		bkImgLabel, bkImgInput,
+		bkImgOffLabelX, bkImgOffInputX,
+		bkImgOffLabelY, bkImgOffInputY,
+		bkImgScaleLabel, bkImgScaleInput,
+	];
 }
 
 function makeTextBlockOptions_pageOptions(textBlockOptions) {

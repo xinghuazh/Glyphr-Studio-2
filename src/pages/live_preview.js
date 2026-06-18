@@ -88,9 +88,9 @@ export function redrawLivePreviewPageDisplayCanvas() {
 		const livePreviewOptions = editor.livePreviewPageOptions;
 
 		// save canvas
-		const lastCanvas = wrapper.querySelector('display-canvas');
-		const img = null;
-		if (lastCanvas === null) {
+		let lastCanvas = wrapper.querySelector('display-canvas');
+		let img = null;
+		if (lastCanvas !== null) {
 			img = lastCanvas.getBackImg();
 		}
 
