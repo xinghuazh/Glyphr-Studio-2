@@ -30,7 +30,7 @@ export class InputNumber extends HTMLElement {
 		// Arrows
 		this.arrowWrapper = makeElement({
 			className: 'arrowWrapper',
-			tabIndex: !isDisabled,
+			tabIndex: -1, // !isDisabled,
 		});
 		// @ts-expect-error 'property does exist'
 		this.arrowWrapper.elementRoot = this;
